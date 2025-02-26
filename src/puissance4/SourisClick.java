@@ -9,16 +9,18 @@ public class SourisClick implements MouseListener{
 	
 	private PlateauCanvas plateau;
 	private Puis4 jeu;
+	private Logger flux;
 	/** 
 	 * Permet de cliquer sur le plateau
 	 * @param p le plateauCanvas
 	 * @param j le modele
 	 * @param le nombre de colonnes
 	 */
-	public SourisClick(PlateauCanvas p , Puis4 j, int col) {
+	public SourisClick(PlateauCanvas p , Puis4 j, int col, Logger f) {
 		
 		this.plateau = p;
 		this.jeu = j;
+		this.flux = f;
 	}
 
 	/** 
@@ -32,10 +34,20 @@ public class SourisClick implements MouseListener{
 
 		int clickcol = (e.getX()/(plateau.getLargeur()/col));
 		
+		
+		flux.Log(flux.DEBUG, "Click sur " + clickcol);
 		if (jeu.estPossibleJouer(clickcol) && !jeu.estTermine()) {
+
+			flux.Log(flux.INFO, "Joueur place un pion dans "+ clickcol);
 			jeu.joueurJoue(clickcol);
 			jeu.progJoue();
+			flux.Log(flux.INFO, "Prog place un pion dans "+ jeu.getMeilleurChoix());
+			
 			plateau.repaint();
+		}
+		
+		else {
+			flux.Log(flux.IMPORTANT, "Coup interdit !");
 		}
 
 		

@@ -16,22 +16,24 @@ public class GridBouton extends JPanel implements PropertyChangeListener{
 	private int hauteur = 50;
 	private int largeur = 600;
 	
+	private Logger flux;
+	
 	/** 
 	 * Creation de la lignée de boutons selon un nombre de colonnes
 	 * @param m est le modele 
 	 * @param p afin d'inserer dans la classe PlateauCanvas
 	 */
-	public GridBouton(Puis4 m, PlateauCanvas p) {
+	public GridBouton(Puis4 m, PlateauCanvas p,Logger f) {
 		
 		this.modele = m;
-		
+		this.flux = f;
 		this.plateau = p;
 		int colonnes = modele.getNbColonnes();
 		this.setLayout(new GridLayout(1,colonnes));
 		this.setPreferredSize(new Dimension(largeur,hauteur));
 		for(int i = 0; i < colonnes; i++ ) { // Premiere ligne de boutons
 			JButton btn = new JButton("V");
-			btn.addActionListener(new InsereListener(plateau,modele,i));
+			btn.addActionListener(new InsereListener(plateau,modele,i,flux));
 			this.add(btn);
 			
 		}
@@ -52,7 +54,7 @@ public class GridBouton extends JPanel implements PropertyChangeListener{
         // Recrée les boutons
         for (int i = 0; i < colonnes; i++) {
             JButton btn = new JButton("V");
-            btn.addActionListener(new InsereListener(plateau, modele, i));
+            btn.addActionListener(new InsereListener(plateau, modele, i,flux));
             this.add(btn);
         }
 

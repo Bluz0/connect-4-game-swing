@@ -19,6 +19,7 @@ public class NouvelleGame extends JPanel implements ActionListener {
 	private JTextField ligne;
 	private JTextField niveau;
 	
+	private Logger flux;
 
 	/** 
 	 * Permet de creer un nouveau plateau lorsque le bouton "Nouvelle Partie" est cliqué
@@ -28,9 +29,10 @@ public class NouvelleGame extends JPanel implements ActionListener {
 	 * @param ligne le nombre de lignes a recuperer sur le TxtField
 	 * @param niveau le niveau de difficulté a recuperer sur le TxtField
 	 */
-	public NouvelleGame(Puis4 modele, JTextField col , JTextField ligne, JTextField niveau) {
+	public NouvelleGame(Puis4 modele, JTextField col , JTextField ligne, JTextField niveau, Logger f) {
 		
 		this.modele = modele;
+		this.flux = f;
 		this.col = col;
 		this.ligne = ligne;
 		this.niveau = niveau;
@@ -45,6 +47,7 @@ public class NouvelleGame extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		modele.nouveauJeu(Integer.parseInt(col.getText()),Integer.parseInt(ligne.getText()),Integer.parseInt(niveau.getText()));
+		flux.Log(flux.INFO, "Nouveau Jeu. NbCols : " + col.getText() + ", NbLignes : " + ligne.getText() + ", Niveau : "+ niveau.getText());
 		this.repaint();
 	}
 	

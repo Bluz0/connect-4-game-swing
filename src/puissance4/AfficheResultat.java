@@ -17,14 +17,16 @@ public class AfficheResultat extends JPanel implements PropertyChangeListener{
 	private int largeur = 600;
 	
 	private JLabel resultat;
+	private Logger flux;
 	/** 
 	 * JPanel affichant le resultat du gagnant
 	 * @param modele le modele du jeu
 	 * @param p le PlateauCanvas permettant d'inclure les options
 	 */
-	public AfficheResultat(Puis4 modele,PlateauCanvas p) {
+	public AfficheResultat(Puis4 modele,PlateauCanvas p, Logger f) {
 		
 		this.modele = modele;
+		this.flux = f;
 		this.plateau = p;
 		this.setLayout(new BorderLayout());
 		
@@ -59,14 +61,15 @@ public class AfficheResultat extends JPanel implements PropertyChangeListener{
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (modele.estProgGagne()) {
 			resultat.setText("Le Programme a gagné.");
+			flux.Log(flux.IMPORTANT, "Le programme a gagné la partie");
             this.setBackground(Color.red);
         } 
 		else if (modele.estJoueurGagne()) {
             resultat.setText("Vous avez gagné.");
+            flux.Log(flux.IMPORTANT, "Le joueur a gagné la partie");
             this.setBackground(Color.green);
         } else {
             resultat.setText("");
-
     		Color nouveau_bleu = new Color(217,243,255);
     		this.setBackground(nouveau_bleu);
         }

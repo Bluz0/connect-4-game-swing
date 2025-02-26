@@ -18,6 +18,8 @@ public class PlateauCanvas extends JPanel implements PropertyChangeListener{
 	private int hauteur = 600;
 	private int largeur = 600;
 	
+	private Logger flux;
+	
 	/** 
 	 * Classe comportant un JPanel incluant : 
 	 * - Une grille de boutons (GridLayout)
@@ -25,14 +27,15 @@ public class PlateauCanvas extends JPanel implements PropertyChangeListener{
 	 * - Le resultat affichant le gagnant ( Venant de la classe AfficheResultat )
 	 * @param m le modele
 	 */
-	public PlateauCanvas (Puis4 m) {
+	public PlateauCanvas (Puis4 m, Logger f) {
 		
 		
 		
 		
 		// Permet d'afficher la grille de boutons
 		this.modele = m;
-		this.boutons = new GridBouton(modele,this);
+		this.flux = f;
+		this.boutons = new GridBouton(modele,this,flux);
 		this.setLayout(new BorderLayout());
 		this.add(boutons, BorderLayout.NORTH);
 		this.p = new Plateau(m,this);
@@ -40,13 +43,13 @@ public class PlateauCanvas extends JPanel implements PropertyChangeListener{
 		this.setPreferredSize(new Dimension(largeur,hauteur));
 		
 		// Affiche le resultat via un JPanel
-		this.gagnant = new AfficheResultat(m,this);
+		this.gagnant = new AfficheResultat(m,this,flux);
 		this.add(gagnant,BorderLayout.SOUTH);
 		this.gagnant.setPreferredSize(new Dimension(600,50));
 		
 		// Gere le clic lorsque un joueur souhaite poser un pion avec la souris
 		int colo = modele.getNbColonnes();
-		this.souris = new SourisClick(this,m,colo);
+		this.souris = new SourisClick(this,m,colo,flux);
 		this.addMouseListener(souris);
 		
 		
