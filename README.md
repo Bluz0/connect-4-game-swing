@@ -32,7 +32,89 @@ Class: GridButton
 ### Class: Puiss4Frame
 <p>All these classes are useless without a window. In our constructor, a JPanel is added for each class.</p> <p>For the NewGame class, we associate a button with the ActionListener: NewGame, which allows changing the number of columns, rows, and difficulty level in the model.</p> <img src="images/bouton_new_game.png"> <p>However, this button will not work without retrieving the necessary data.</p> <p>We then create three JLabels and three JTextFields with default values taken from the default game settings (columns: 7, rows: 6, difficulty level: 2).</p> <p>Thanks to our JTextFields, our button is functional.</p> <img src="images/game_defaut.png"> <p>By changing our JTextFields and clicking on New Game, our board updates to a 9x9 board:</p> <img src="images/9x9.png">
 
+# Adding Save and Load Buttons
 
+To add our two buttons, Save and Load, let's create these two classes: Save and Load.
+## The Save Class
+
+The Save class implements the Serializable and ActionListener interfaces, allowing us to click on a Save button.
+
+After creating the Save constructor, which takes the Puiss4 model and a filename (String) as parameters, we add the actionPerformed method.
+
+Inside this method, we use a try/catch block. In the try section, we use the ObjectOutputStream class to write objects to a file, along with the FileOutputStream class.
+
+We write the game board to the file using the writeObject method.
+<img src="images/sauvegarder-1.png"/>
+## The Load Class
+
+The same principle applies to the constructor.
+
+In the actionPerformed method, we use the same class, but this time in Input mode to load the saved file.
+
+Further in the method, we use setText to modify the number of columns, rows, and difficulty level if they have been changed.
+<img src="images/charger-1.png"> <img src="images/ligne-col-niv.png">
+Converting Them into Buttons
+
+It is quite simple to turn these classes into buttons. We just need to go to our Puiss4Frame class, which contains our frame, and add JButtons to it.
+<img src="images/boutons.png"> <img src="images/boutons-2.png">
+## Demonstration:
+
+The game state I just saved by clicking the button:
+<img src="images/le-sauv.png">
+
+I decide to create a new game while changing the board dimensions:
+<img src="images/new-game.png">
+
+Then, I want to return to the previous game state by clicking Load. As we can see, our previous game with 8 columns, 8 rows, and a difficulty level of 3 has been restored.
+<img src="images/le-sauv2.png">
+## The Logger Class
+
+To implement a logging system, we need to create the Logger class.
+
+We create the three required constructors:
+<img src="images/logger-3.png">
+
+Then, we create the Log method, which displays a message along with its importance level.
+<img src="images/log.png">
+
+To make our Logger class usable, we need to integrate it into our other classes.
+
+For example, to track which user clicks on which column, we simply create an instance of Logger and use its Log method.
+
+Each message is associated with its importance level.
+<img src="images/inserelistener.png">
+
+After implementing it in each class, we initialize it in our Puiss4Frame class:
+Logger fl = new Logger();
+
+As seen, each action generates a message in the console.
+<img src="images/infos.png">
+
+This also happens when closing the window.
+
+To initialize the logging system by reading the logging configuration from a file, we need to use the Logger(String) constructor.
+
+In this constructor, we read the file using FileReader, extracting only the first line of the given file.
+
+We parse this file to extract the importance level (as a String) and the directory + file name.
+
+Using the niveauDegreImportance method, which converts a string into a constant (INFO, DEBUG, etc.), and the gereFichier method, we can see how log outputs are managed.
+<img src="images/logger-2.png">
+
+Then, in the main method of the Puiss4Frame class, we initialize our Logger as follows:
+Logger fl = new Logger("config.txt");
+Examples:
+
+I decide to modify my config.txt file to store all necessary information in another file named touteInfo.txt.
+<img src="images/all.png">
+
+I play a game and close the window—each log entry has been written to touteInfo.txt.
+
+Only INFO messages are displayed, which is why messages such as "Window Closed" or "The program has won" do not appear.
+<img src="images/ttinfo.png">
+
+Another example with DEBUG: the messages will not be written to a file but displayed in the console if we specify System.err.
+<img src="images/debug.png"> <img src="images/debug-console.png">
 
 
 
@@ -121,6 +203,107 @@ Class: GridButton
 <p>En changeant nos jtxtfield puis en cliquant sur Nouvelle Partie, notre plateau se modifie en plateau 9x9 : </p>
 
 <img src="images/9x9.png">
+
+# Ajout boutons sauvegarder et charger
+
+<p> Pour ajouter nos deux boutons savegarder et charger, créeons ces deux classes : Sauvegarder et Charger. </p>
+
+## La classe : Sauvegarder
+<p> La classe Sauvegarder implemente les interfaces Serializable et ActionListener permettant de pouvoir cliquer sur un bouton Sauvegarder. </p>
+
+<p> Apres avoir creer le constructeur Sauvegarder accompagné en parametre du modele Puis4 et un nom de fichier (String), on ajoute la methode actionPerformed. </p>
+
+<p> Dans notre methode, on retrouve un try/catch, dans notre try on retrouve la classe ObjectOutputStream qui permet d’écrire des objets dans un fichier, accompagné du fichier FileOutputStream. </p>
+
+<p> On ecrit dans ce meme fichier notre plateau à sauvegarder à l'aide de la méthode writeObject.
+
+<img src="images/sauvegarder-1.png">
+
+## La classe : Charger
+
+<p> Meme principe concernant le constructeur</p>
+
+<p> Dans la méthode actionPerformed , meme classe à utiliser mais cette fois ci en Input pour charger le fichier sauvegarder.</p>
+
+<p> Plus loin on voit des setText pour modifier les nombres de colonnes , lignes, et niveau si ceux-ci ont été modifié.</p>
+
+<img src="images/charger-1.png">
+<img src="images/ligne-col-niv.png">
+
+## Les transformer en boutons
+
+<p> Assez simple de transformer ces classes en boutons. Il suffit d'aller dans notre classe puiss4Frame qui contient notre frame et d'ajouter a cette meme frame des JButtons.</p>
+
+<img src="images/boutons.png">
+<img src="images/boutons-2.png">
+
+#### Demonstration :
+
+<p> Partie que je viens de sauvegarder en cliquant sur le bouton</p>
+<img src="images/le-sauv.png">
+
+<p> Je decide de creer une nouvelle partie en changeant par ailleurs les dimensions du plateau </p>
+
+<img src="images/new-game.png">
+
+<p> Par la suite je souhaite retourné a la partie precedente en cliquant sur charger, comme on le constate , notre partie avec un nombre de colonne de 8 , un nombre de lignes de 8 et un niveau de difficulté de 3 est revenue. </p>
+
+<img src="images/le-sauv2.png">
+
+## La classe : Logger
+
+<p> Pour réaliser un système de traçage, il faut créer la classe Logger </p>
+
+<p> On crée nos 3 constructeurs demandé </p>
+<img src="images/logger-3.png">
+
+<p> On crée par la suite la méthode Log, qui permet d'afficher un message accompagné du degré d'importance </p>
+
+<img src="images/log.png">
+
+<p> Pour que notre classe Logger soit utilisable, il faut l'utiliser dans nos autres classe. </p>
+
+<p>Exemple : pour afficher savoir quel utilisateur clique sur quel colonne il suffit d'avoir notre instance logger et d'utiliser sa methode Log. </p>
+
+<p>Chaque message est accompagné de son degré d'importance. </p>
+<img src="images/inserelistener.png">
+
+<p> Apres l'avoir implementé dans chaque classe, il faut l'initialisé dans notre classe Puiss4Frame. Logger fl = new Logger();</p>
+
+<p> Comme on le voit a chaque action, une information est affiché dans la console </p>
+
+<img src="images/infos.png">
+
+<p> Et ce, meme à la fermeture de la fenetre </p>
+
+<p> Pour pouvoir initialiser le système précédent en lisant la configuration de "traçage" dans un fichier, il faut d'abord cette classe Logger(String) </p>
+
+
+<p> Dans ce constructeur on lit le fichier à l'aide de FileReader, on decide de lire uniquement la premiere ligne de ce fichier donnée en parametre.</p>
+
+<p> On decoupe dans ce fichier le degre d'importance ( en string ) et le repertoire + fichier choisi. </p>
+
+<p> A l'aide de notre methode niveauDegreImportance, qui nous permet de convertir un string en constante (INFO,DEBUG...etc) et de notre methode gereFichier. On peut voir comment les sorties sont gerée . </p>
+<img src="images/logger-2.png">
+
+<p> Par la suite dans notre main de la classe Puiss4Frame, on initialise notre Logger comme ceci : Logger fl = new Logger("config.txt"); </p>
+
+### Exemples :
+
+<p> Je décide de modifier mon fichier config.txt pour pouvoir mettre toutes les infos dont j'ai besoin dans un autre fichier nommé touteInfo.txt </p>
+
+<img src="images/all.png">
+
+<p> Je joue une partie et decide de fermer la fenetre, chaque information a été écrite dans notre fichier touteInfo.txt </p>
+
+<p> Il n'y a que les INFO qui sont affiché, c'est pour cela que les messages tel que Fermer Fenetre ou Le programme a gagné ne s'affichent pas </p>
+
+<img src="images/ttinfo.png">
+
+<p> Autre exemple avec DEBUG, les messages ne s'afficheront pas dans un fichier mais dans notre console si on indique System.err <p>
+
+<img src="images/debug.png">
+<img src="images/debug-console.png">
 
 
 
